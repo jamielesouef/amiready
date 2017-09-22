@@ -20,10 +20,6 @@ extension TasksViewModel: UITableViewDelegate, UITableViewDataSource {
     return cell.flatMap { $0 } ?? UITableViewCell()
   }
   
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    <#code#>
-  }
-  
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return 0
   }
