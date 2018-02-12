@@ -5,7 +5,7 @@ class TaskRepository {
   private(set) var tasks: Tasks
 
   init(for user: Users,
-       withResrouce resource: TaskResourceInjectable = TaskResource(),
+       withResource resource: TaskResourceInjectable = TaskResource(),
        withFactory factory: TaskFactoryInjectable = TaskFactory()
   ) {
     guard let existingTasks = resource.getTasks(forKey: user.key) else {
