@@ -100,3 +100,4 @@ xcuserdata/
 ## Cocoapods
 .DS_Store
 /Pods
+/.idea
