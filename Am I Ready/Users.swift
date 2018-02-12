@@ -14,6 +14,6 @@ extension Users {
   }
 
   var key: String {
-    return "\(DateUtils.getDateString()-\(self.displayName))"
+    return DateUtils.getDateString() + "-" + self.displayName
   }
 }

@@ -1,40 +1,16 @@
 import Foundation
 
-struct TaskResource {
-  static func getTasks(forKey key: String) -> [Tasks]? {
-    return nil
-  }
-}
-
 class TaskRepository {
 
-  private let sharedTasks = [
-    "Brush Teeth",
-    "Make Bed",
-    "Open blinds",
-    "Pack lunchbox"
-  ]
+  private(set) var tasks: Tasks
 
-  private let aidansTaks = [
-    "Lock back door",
-    "Lock front door",
-    "Make sure Ryan is ready"
-  ]
-
-  private let ryansTasks = [
-    "Take medicine",
-    "Check mice water",
-    "Check mice food"
-  ]
-
-  private(set) var tasks: [Task]
-
-  init(for user: Users) {
-    guard let existingTasks = TaskResource.getTasks(forKey: user.key) else {
-      switch user {
-      case .aidan : self.tasks = (sharedTasks + aidansTaks).sorted().map { Task(title: $0) }
-      case .ryan : self.tasks = (sharedTasks + ryansTasks).sorted().map { Task(title: $0) }
-      }
+  init(for user: Users,
+       withResrouce resource: TaskResourceInjectable = TaskResource(),
+       withFactory factory: TaskFactoryInjectable = TaskFactory()
+  ) {
+    guard let existingTasks = resource.getTasks(forKey: user.key) else {
+      tasks = factory.tasksFor(user: user)
+      return
     }
 
     tasks = existingTasks
