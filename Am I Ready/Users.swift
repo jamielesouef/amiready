@@ -13,10 +13,7 @@ extension Users {
     }
   }
 
-  var tasks: [Task] {
-    switch self {
-    case .aidan: return TaskRepository.aidan
-    case .ryan: return TaskRepository.ryan
-    }
+  var key: String {
+    return "\(DateUtils.getDateString()-\(self.displayName))"
   }
 }

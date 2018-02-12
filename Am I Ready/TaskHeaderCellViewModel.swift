@@ -7,11 +7,11 @@ struct TaskHeaderCellViewModel {
 }
 
 extension TaskHeaderCellViewModel {
-  init(withUser user: Users) {
-    self.title = user.displayName
-    self.remaining = "\(user.tasks.count)"
-    let formatter = DateFormatter()
-    formatter.dateFormat = "EEEE, MMM d, yyyy"
-    self.date = formatter.string(from: Date())
+  init(title: String, remaining: Int, total: Int) {
+    self.title = "\(title) Tasks"
+
+    self.remaining = remaining == 0 ? "Done" : "\(total - remaining)/\(total)"
+
+   self.date = DateUtils.getDateString()
   }
 }

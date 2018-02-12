@@ -12,8 +12,12 @@ class UserTaskViewController: UIViewController {
 
     viewModel?
       .asObservable
-      .subscribe { [weak self] in
-        self?.tableView.reloadData()
+      .subscribe { [weak self] event in
+        switch event {
+        case .next: self?.tableView.reloadData()
+        case .completed: break
+        case .error(let err): print("error \(err)")
+        }
       }
       .disposed(by: disposeBag)
   }
@@ -35,12 +39,20 @@ extension UserTaskViewController: UITableViewDelegate, UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let headerCellIidentifier = R.reuseIdentifier.taskHeaderCell.identifier
-    let headerCell = tableView.dequeueReusableCell(withIdentifier: headerCellIidentifier) as? TaskHeaderCell
-
-    headerCell?.configure(with: viewModel?.headerModel)
+    let headerCellIdentifier = R.reuseIdentifier.taskHeaderCell.identifier
+    let headerCell = tableView.dequeueReusableCell(withIdentifier: headerCellIdentifier) as? TaskHeaderCell
+    if let model = viewModel {
+      let headerViewModel = TaskHeaderCellViewModel(title: model.user.displayName,
+                                                    remaining: model.remainingTasks,
+                                                    total: model.taskCount)
+      headerCell?.configure(with: headerViewModel)
+    }
 
     return headerCell
+  }
+
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    return nil
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

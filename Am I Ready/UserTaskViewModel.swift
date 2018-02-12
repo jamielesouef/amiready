@@ -3,7 +3,7 @@ import RxSwift
 
 class UserTaskViewModel {
   private var tasks = Variable<[Task]>([])
-  private(set) var headerModel: TaskHeaderCellViewModel
+  private var repository: TaskRepository
 
   var taskCount: Int {
     return tasks.value.count
@@ -21,8 +21,8 @@ class UserTaskViewModel {
 
   init(withUser user: Users) {
     self.user = user
-    self.tasks.value = user.tasks
-    self.headerModel = TaskHeaderCellViewModel(withUser: user)
+    self.repository = TaskRepository(for: user)
+    self.tasks.value = repository.tasks
   }
 
   func modelFor(indexPath: IndexPath) -> Task {
@@ -30,7 +30,7 @@ class UserTaskViewModel {
   }
 
   func didSelectTask(atIndexPath indexPath: IndexPath) {
-    let task = tasks.value[indexPath.row].toggleStatus()
-    tasks.value[indexPath.row] = task
+    repository.toggleTask(atIndexPath: indexPath)
+    tasks.value = repository.tasks
   }
 }
