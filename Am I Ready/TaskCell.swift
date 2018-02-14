@@ -11,8 +11,8 @@ extension TaskCell: Configurable {
   func configure(with model: Task?) {
     if let model = model {
       self.textLabel?.text = model.title
-      self.setSelected(model.status == .complete, animated: false)
-      self.accessoryType = model.status == .complete ? .checkmark : .none
+      self.setSelected(model.complete, animated: false)
+      self.accessoryType = model.complete ? .checkmark : .none
     }
   }
 }

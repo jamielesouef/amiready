@@ -10,7 +10,7 @@ class UserTaskViewModel {
   }
 
   var remainingTasks: Int {
-    return tasks.value.filter{ $0.status == .open }.count
+    return tasks.value.filter{ $0.complete == false }.count
   }
 
   var asObservable: Observable<[Task]> {
