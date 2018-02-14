@@ -116,30 +116,39 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="GdI-Bv-c7v">
-                                <rect key="frame" x="168" y="303.5" width="39" height="60"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="GdI-Bv-c7v">
+                                <rect key="frame" x="28" y="88" width="319" height="555"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lv8-V2-UrW">
-                                        <rect key="frame" x="0.0" y="0.0" width="39" height="30"/>
+                                        <rect key="frame" x="12" y="0.0" width="295" height="277.5"/>
                                         <state key="normal" title="Aidan"/>
                                         <connections>
                                             <action selector="selectUser:" destination="fAz-oQ-1LL" eventType="touchUpInside" id="2Oa-Ov-dZA"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CKT-lF-GPy">
-                                        <rect key="frame" x="0.0" y="30" width="39" height="30"/>
+                                        <rect key="frame" x="12" y="277.5" width="295" height="277.5"/>
                                         <state key="normal" title="Ryan"/>
                                         <connections>
                                             <action selector="selectUser:" destination="fAz-oQ-1LL" eventType="touchUpInside" id="Nnz-J5-6bb"/>
                                         </connections>
                                     </button>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="Lv8-V2-UrW" firstAttribute="leading" secondItem="GdI-Bv-c7v" secondAttribute="leading" constant="12" id="Q78-TF-NUq"/>
+                                    <constraint firstItem="CKT-lF-GPy" firstAttribute="leading" secondItem="GdI-Bv-c7v" secondAttribute="leading" constant="12" id="bj7-RQ-qsd"/>
+                                    <constraint firstAttribute="trailing" secondItem="Lv8-V2-UrW" secondAttribute="trailing" constant="12" id="fSd-rx-HDe"/>
+                                    <constraint firstAttribute="trailing" secondItem="CKT-lF-GPy" secondAttribute="trailing" constant="12" id="qtb-Dk-vOo"/>
+                                </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="GdI-Bv-c7v" firstAttribute="leading" secondItem="gg4-XP-pMJ" secondAttribute="leadingMargin" constant="12" id="1IH-u8-bgg"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="GdI-Bv-c7v" secondAttribute="trailing" constant="12" id="64m-wJ-dPk"/>
+                            <constraint firstItem="a3d-f3-ZZ6" firstAttribute="top" secondItem="GdI-Bv-c7v" secondAttribute="bottom" constant="24" id="BRz-Lw-zY3"/>
                             <constraint firstItem="GdI-Bv-c7v" firstAttribute="centerX" secondItem="gg4-XP-pMJ" secondAttribute="centerX" id="DBz-HH-LfA"/>
-                            <constraint firstItem="GdI-Bv-c7v" firstAttribute="centerY" secondItem="gg4-XP-pMJ" secondAttribute="centerY" id="NW0-cE-XE4"/>
+                            <constraint firstItem="GdI-Bv-c7v" firstAttribute="top" secondItem="u7M-Vv-P9H" secondAttribute="bottom" constant="24" id="yeJ-jh-h5Y"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="9Tp-Bo-nWR"/>

@@ -1,9 +1,21 @@
 import UIKit
 
+class UserButton: UIButton {
+  override func awakeFromNib() {
+    super.awakeFromNib()
+  }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    layer.cornerRadius = 5
+    backgroundColor = UIColor.blue
+  }
+}
+
 class UserSelectViewController: UIViewController {
 
-  @IBOutlet weak var aidanSelectButton: UIButton!
-  @IBOutlet weak var ryanSelectButton: UIButton!
+  @IBOutlet weak var aidanSelectButton: UserButton!
+  @IBOutlet weak var ryanSelectButton: UserButton!
 
 
   @IBAction func selectUser(_ sender: UIButton) {
