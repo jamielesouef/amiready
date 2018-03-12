@@ -1,12 +1,12 @@
 import Foundation
 
 protocol TaskResourceInjectable {
-  func getTasks(forUser user: Users) -> Tasks?
-  func save(tasks: Tasks, forUser user: Users) -> Tasks?
+  func getTasks(forUser user: User) -> Tasks?
+  func save(tasks: Tasks, forUser user: User) -> Tasks?
 }
 
 struct TaskResource: TaskResourceInjectable {
-  func getTasks(forUser user: Users) -> Tasks? {
+  func getTasks(forUser user: User) -> Tasks? {
 
     let jsonDecoder = JSONDecoder()
     guard let jsonData = UserDefaults.standard.data(forKey: user.key),
@@ -18,7 +18,7 @@ struct TaskResource: TaskResourceInjectable {
     return tasks
   }
 
-  func save(tasks: Tasks, forUser user: Users) -> Tasks? {
+  func save(tasks: Tasks, forUser user: User) -> Tasks? {
     let jsonEncoder = JSONEncoder()
 
     guard let jsonData = try? jsonEncoder.encode(tasks) else {

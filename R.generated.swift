@@ -31,8 +31,16 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
   
-  /// This `R.image` struct is generated, and contains static references to 0 images.
+  /// This `R.image` struct is generated, and contains static references to 1 images.
   struct image {
+    /// Image `NavIcon`.
+    static let navIcon = Rswift.ImageResource(bundle: R.hostingBundle, name: "NavIcon")
+    
+    /// `UIImage(named: "NavIcon", bundle: ..., traitCollection: ...)`
+    static func navIcon(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.navIcon, compatibleWith: traitCollection)
+    }
+    
     fileprivate init() {}
   }
   
@@ -41,8 +49,10 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
   
-  /// This `R.reuseIdentifier` struct is generated, and contains static references to 2 reuse identifiers.
+  /// This `R.reuseIdentifier` struct is generated, and contains static references to 3 reuse identifiers.
   struct reuseIdentifier {
+    /// Reuse identifier `UserSelectCell`.
+    static let userSelectCell: Rswift.ReuseIdentifier<UserSelectCell> = Rswift.ReuseIdentifier(identifier: "UserSelectCell")
     /// Reuse identifier `taskCell`.
     static let taskCell: Rswift.ReuseIdentifier<TaskCell> = Rswift.ReuseIdentifier(identifier: "taskCell")
     /// Reuse identifier `taskHeaderCell`.
@@ -125,7 +135,7 @@ struct _R {
     }
     
     struct main: Rswift.StoryboardResourceWithInitialControllerType {
-      typealias InitialController = UIKit.UINavigationController
+      typealias InitialController = NavController
       
       let bundle = R.hostingBundle
       let name = "Main"

@@ -1,5 +1,5 @@
 protocol TaskFactoryInjectable {
-  func tasksFor(user: Users) -> Tasks
+  func tasksFor(user: User) -> Tasks
 }
 
 struct TaskFactory: TaskFactoryInjectable {
@@ -23,14 +23,17 @@ struct TaskFactory: TaskFactoryInjectable {
     "Check mice food"
   ]
 
-  func tasksFor(user: Users) -> Tasks {
+  func tasksFor(user: User) -> Tasks {
     func toModel(task: [String]) -> Tasks {
       return (sharedTasks + task).sorted().map { Task(title: $0) }
     }
 
-    switch user {
-    case .aidan : return toModel(task: aidansTaks)
-    case .ryan : return toModel(task: ryansTasks)
+    switch user.name {
+    case "Aidan" : return toModel(task: aidansTaks)
+    case "Ryan" : return toModel(task: ryansTasks)
+    default : ()
     }
+    
+    return []
   }
 }

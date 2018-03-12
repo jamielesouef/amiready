@@ -42,7 +42,7 @@ extension UserTaskViewController: UITableViewDelegate, UITableViewDataSource {
     let headerCellIdentifier = R.reuseIdentifier.taskHeaderCell.identifier
     let headerCell = tableView.dequeueReusableCell(withIdentifier: headerCellIdentifier) as? TaskHeaderCell
     if let model = viewModel {
-      let headerViewModel = TaskHeaderCellViewModel(title: model.user.displayName,
+      let headerViewModel = TaskHeaderCellViewModel(title: model.user.name,
                                                     remaining: model.remainingTasks,
                                                     total: model.taskCount)
       headerCell?.configure(with: headerViewModel)

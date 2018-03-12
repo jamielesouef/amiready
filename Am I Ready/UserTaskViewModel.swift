@@ -17,9 +17,9 @@ class UserTaskViewModel {
     return tasks.asObservable()
   }
 
-  let user: Users
+  let user: User
 
-  init(withUser user: Users) {
+  init(withUser user: User) {
     self.user = user
     self.repository = TaskRepository(for: user)
     self.tasks.value = repository.tasks

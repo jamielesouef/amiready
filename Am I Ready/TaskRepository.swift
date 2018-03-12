@@ -3,11 +3,11 @@ import Foundation
 class TaskRepository {
 
   private(set) var tasks: Tasks
-  private let user: Users
+  private let user: User
   private let resource: TaskResourceInjectable
   private let factory: TaskFactoryInjectable
 
-  init(for user: Users,
+  init(for user: User,
        withResource resource: TaskResourceInjectable = TaskResource(),
        withFactory factory: TaskFactoryInjectable = TaskFactory()
   ) {
