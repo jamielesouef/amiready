@@ -1,25 +1,14 @@
 import UIKit
-import RxSwift
+
 
 class UserTaskViewController: UIViewController {
   @IBOutlet weak var tableView: UITableView!
   var viewModel: UserTaskViewModel?
 
-  let disposeBag = DisposeBag()
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    viewModel?
-      .asObservable
-      .subscribe { [weak self] event in
-        switch event {
-        case .next: self?.tableView.reloadData()
-        case .completed: break
-        case .error(let err): print("error \(err)")
-        }
-      }
-      .disposed(by: disposeBag)
   }
 }
 

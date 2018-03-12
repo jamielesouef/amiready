@@ -7,8 +7,9 @@ target 'Am I Ready' do
 
   # Pods for Am I Ready
   pod 'R.swift'
-  pod 'RxSwift',    '~> 4.0'
-  pod 'RxCocoa',    '~> 4.0'
+  pod "PromiseKit", "~> 6.0"
+  pod 'Alamofire', '~> 4.7'
+  pod 'SwiftyJSON'
 
   target 'Am I ReadyTests' do
     inherit! :search_paths

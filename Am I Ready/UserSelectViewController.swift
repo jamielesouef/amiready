@@ -2,16 +2,15 @@ import UIKit
 
 class UserSelectViewController: UIViewController {
 
-  let users: [User] = [
-    User(id: "04b21ea6-25b6-11e8-b467-0ed5f89f718b", name: "Aidan"),
-    User(id: "2a601ae3-c9e5-4abf-854a-8846fea8f028", name: "Ryan")
-  ]
+  var users: [User] = []
+
+  let repository = UserRepository()
 
   @IBOutlet weak var collectionView: UICollectionView!
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
+    repository.delegate = self
     let navIcon = UIImage(named: "NavIcon")
     let imageView = UIImageView(image: navIcon)
     imageView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
@@ -41,11 +40,11 @@ private extension UserSelectViewController {
 
 extension UserSelectViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return users.count
+    return repository.users.count
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height/2)
+    return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height/3)
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -55,15 +54,21 @@ extension UserSelectViewController: UICollectionViewDelegate, UICollectionViewDa
       return UICollectionViewCell()
     }
 
-    cell.configure(with: users[indexPath.row])
+    cell.configure(with: repository.users[indexPath.row])
     cell.delegate = self
     return cell
   }
 }
 
+extension UserSelectViewController: UserRepositoryNotificationDelegate {
+  func repositoryHasUpdated() {
+    self.collectionView.reloadData()
+  }
+}
+
+
 extension UserSelectViewController: UserSelectCellDelegate {
   func didSelect(user model: User?) {
-    print("didSelect:user", model)
     guard let model = model else { return }
     presentTasks(forUser: model)
   }
