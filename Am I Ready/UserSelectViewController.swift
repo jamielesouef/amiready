@@ -2,8 +2,6 @@ import UIKit
 
 class UserSelectViewController: UIViewController {
 
-  var users: [User] = []
-
   let repository = UserRepository()
 
   @IBOutlet weak var collectionView: UICollectionView!
@@ -11,12 +9,14 @@ class UserSelectViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     repository.delegate = self
-    let navIcon = UIImage(named: "NavIcon")
-    let imageView = UIImageView(image: navIcon)
-    imageView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
-    imageView.contentMode = .scaleAspectFit
-    navigationItem.titleView = imageView
+    setupNavigationTitleIcon()
+    setupPullToRefresh()
+  }
 
+  @objc func refresh(sender: UIRefreshControl) {
+    repository.loadUsers {
+      sender.endRefreshing()
+    }
   }
 
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -33,6 +33,23 @@ class UserSelectViewController: UIViewController {
 }
 
 private extension UserSelectViewController {
+
+  func setupNavigationTitleIcon() {
+    let navIcon = UIImage(named: "NavIcon")
+    let imageView = UIImageView(image: navIcon)
+    imageView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+    imageView.contentMode = .scaleAspectFit
+    navigationItem.titleView = imageView
+  }
+
+  func setupPullToRefresh() {
+    let refreshControl = UIRefreshControl(frame: CGRect(x: 0, y: 0, width: collectionView.bounds.width, height: 50))
+    refreshControl.attributedTitle = NSAttributedString(string: "Reload users")
+    refreshControl.addTarget(self, action: #selector(refresh(sender:)), for: .valueChanged)
+    collectionView.alwaysBounceVertical = true
+    collectionView.refreshControl = refreshControl
+  }
+
   func presentTasks(forUser user: User) {
     performSegue(withIdentifier: R.segue.userSelectViewController.toTasks.identifier, sender: user)
   }
@@ -65,7 +82,6 @@ extension UserSelectViewController: UserRepositoryNotificationDelegate {
     self.collectionView.reloadData()
   }
 }
-
 
 extension UserSelectViewController: UserSelectCellDelegate {
   func didSelect(user model: User?) {

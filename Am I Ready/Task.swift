@@ -5,7 +5,6 @@ struct Task: Codable {
   var complete: Bool
 }
 
-
 extension Task {
   init(title: String) {
     self.title = title

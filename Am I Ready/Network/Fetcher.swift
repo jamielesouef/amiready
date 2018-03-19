@@ -3,21 +3,11 @@ import SwiftyJSON
 import Alamofire
 import PromiseKit
 
-class Networking {
-  static let manager: SessionManager = {
-    let serverTrustPolicies: [String: ServerTrustPolicy] = [
-      "localhost:4000": .disableEvaluation
-    ]
-
-    let configuration = URLSessionConfiguration.default
-    configuration.httpAdditionalHeaders = Alamofire.SessionManager.defaultHTTPHeaders
-
-    return Alamofire.SessionManager(configuration: configuration,
-      serverTrustPolicyManager: ServerTrustPolicyManager(policies: serverTrustPolicies))
-  }()
+protocol FetcherInjectable {
+  func get(from url: URL) -> Promise<JSON>
 }
 
-class Fetcher {
+class Fetcher:FetcherInjectable {
   func get(from url: URL) -> Promise<JSON> {
       return Promise { seal in
         Networking.manager.request(url, method: .get)
