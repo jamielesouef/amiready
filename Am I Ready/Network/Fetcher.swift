@@ -3,8 +3,10 @@ import SwiftyJSON
 import Alamofire
 import RxSwift
 
+typealias OptionalCallback = (() -> Void)?
+
 protocol FetcherInjectable {
-  func get(from url: URL) -> Observable<JSON>
+  func get(from url: URL, callback: OptionalCallback) -> Observable<JSON>
 }
 
 class Fetcher:FetcherInjectable {
@@ -13,7 +15,7 @@ class Fetcher:FetcherInjectable {
     case couldNotGetFromResource(error:Error?)
   }
 
-  func get(from url: URL) -> Observable<JSON> {
+  func get(from url: URL, callback: OptionalCallback = nil) -> Observable<JSON> {
       return Observable.create { o in
         Networking.manager.request(url, method: .get)
           .validate()
@@ -25,6 +27,7 @@ class Fetcher:FetcherInjectable {
             case .failure:
               o.onError(Fetcher.FetcherErrros.couldNotGetFromResource(error: response.error))
             }
+            callback?()
         }
         return Disposables.create()
       }

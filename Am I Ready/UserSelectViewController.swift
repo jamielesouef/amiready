@@ -6,7 +6,7 @@ class UserSelectViewController: UIViewController {
 
   let repository = UserRepository()
   let disposeBag = DisposeBag()
-
+  var refreshController = UIRefreshControl()
   @IBOutlet weak var collectionView: UICollectionView!
 
   override func viewDidLoad() {
@@ -17,7 +17,9 @@ class UserSelectViewController: UIViewController {
   }
 
   @objc func refresh(sender: UIRefreshControl) {
-
+    repository.fetchUsersFromRemoteResource { [weak self] in
+      self?.refreshController.endRefreshing()
+    }
   }
 
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -57,11 +59,10 @@ private extension UserSelectViewController {
   }
 
   func setupPullToRefresh() {
-    let refreshControl = UIRefreshControl(frame: CGRect(x: 0, y: 0, width: collectionView.bounds.width, height: 50))
-    refreshControl.attributedTitle = NSAttributedString(string: "Reload users")
-    refreshControl.addTarget(self, action: #selector(refresh(sender:)), for: .valueChanged)
+    refreshController.attributedTitle = NSAttributedString(string: "Reload users")
+    refreshController.addTarget(self, action: #selector(refresh(sender:)), for: .valueChanged)
     collectionView.alwaysBounceVertical = true
-    collectionView.refreshControl = refreshControl
+    collectionView.refreshControl = refreshController
   }
 
   func presentTasks(forUser user: User) {
