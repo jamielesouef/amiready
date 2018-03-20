@@ -1,22 +1,23 @@
 import UIKit
+import RxSwift
+import RxCocoa
 
 class UserSelectViewController: UIViewController {
 
   let repository = UserRepository()
+  let disposeBag = DisposeBag()
 
   @IBOutlet weak var collectionView: UICollectionView!
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    repository.delegate = self
     setupNavigationTitleIcon()
     setupPullToRefresh()
+    setupCollectionViewBinding()
   }
 
   @objc func refresh(sender: UIRefreshControl) {
-    repository.loadUsers {
-      sender.endRefreshing()
-    }
+
   }
 
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -33,6 +34,19 @@ class UserSelectViewController: UIViewController {
 }
 
 private extension UserSelectViewController {
+
+  func setupCollectionViewBinding() {
+    collectionView.rx.setDelegate(self).disposed(by: disposeBag)
+
+    let identifier = R.reuseIdentifier.userSelectCell.identifier
+    repository
+      .users
+      .bind(to: collectionView.rx.items(cellIdentifier: identifier, cellType: UserSelectCell.self)) { row, element, cell in
+        cell.configure(with: element)
+      }
+      .disposed(by: disposeBag)
+
+  }
 
   func setupNavigationTitleIcon() {
     let navIcon = UIImage(named: "NavIcon")
@@ -55,31 +69,9 @@ private extension UserSelectViewController {
   }
 }
 
-extension UserSelectViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return repository.users.count
-  }
-
+extension UserSelectViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height/3)
-  }
-
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
-    let identifier = R.reuseIdentifier.userSelectCell.identifier
-    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? UserSelectCell else {
-      return UICollectionViewCell()
-    }
-
-    cell.configure(with: repository.users[indexPath.row])
-    cell.delegate = self
-    return cell
-  }
-}
-
-extension UserSelectViewController: UserRepositoryNotificationDelegate {
-  func repositoryHasUpdated() {
-    self.collectionView.reloadData()
+    return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height / 3)
   }
 }
 

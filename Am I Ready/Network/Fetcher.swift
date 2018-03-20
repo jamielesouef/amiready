@@ -1,26 +1,32 @@
 import Foundation
 import SwiftyJSON
 import Alamofire
-import PromiseKit
+import RxSwift
 
 protocol FetcherInjectable {
-  func get(from url: URL) -> Promise<JSON>
+  func get(from url: URL) -> Observable<JSON>
 }
 
 class Fetcher:FetcherInjectable {
-  func get(from url: URL) -> Promise<JSON> {
-      return Promise { seal in
+
+  enum FetcherErrros: Error {
+    case couldNotGetFromResource(error:Error?)
+  }
+
+  func get(from url: URL) -> Observable<JSON> {
+      return Observable.create { o in
         Networking.manager.request(url, method: .get)
           .validate()
           .responseJSON { response in
             switch response.result {
             case .success(let value):
               let json = JSON(value)
-              seal.fulfill(json)
+              o.onNext(json)
             case .failure:
-              seal.reject(response.error!)
+              o.onError(Fetcher.FetcherErrros.couldNotGetFromResource(error: response.error))
             }
         }
+        return Disposables.create()
       }
     }
 }

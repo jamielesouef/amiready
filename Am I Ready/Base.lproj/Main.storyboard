@@ -187,10 +187,6 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
-                                <connections>
-                                    <outlet property="dataSource" destination="fAz-oQ-1LL" id="SBy-0i-NXH"/>
-                                    <outlet property="delegate" destination="fAz-oQ-1LL" id="QRt-ij-mjh"/>
-                                </connections>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -1,36 +1,27 @@
 import Foundation
+import RxSwift
+import RxSwiftExt
 
-protocol UserRepositoryNotificationDelegate: AnyObject {
-  func repositoryHasUpdated()
-}
 
 class UserRepository {
-  private(set) var users: Users = [] {
-    didSet {
-      self.delegate?.repositoryHasUpdated()
-    }
-  }
+
+  private(set) var users = BehaviorSubject<Users>(value: [])
 
   let fetcher: FetcherInjectable
-
-  weak var delegate: UserRepositoryNotificationDelegate?
+  let disposeBag = DisposeBag()
 
   init(fetcher: FetcherInjectable = Fetcher()) {
     self.fetcher = fetcher
-    self.loadUsers()
+    self.fetchUsersFromRemoteResource()
   }
 
-  func loadUsers(callback: (() -> Void)? = nil) {
+  func fetchUsersFromRemoteResource() {
     let url = URL(string: "http://localhost:3000/users")!
     self.fetcher
       .get(from: url)
-      .compactMap { $0["response"]["users"].array }
+      .map { $0["response"]["users"].arrayValue }
       .map { Users.from(json: $0) }
-      .done { [weak self] users in
-        self?.users = users
-        callback?()
-      }.catch {
-        print("we had a boo boo", $0)
-      }
+      .bind(to: users)
+      .disposed(by: disposeBag)
   }
 }

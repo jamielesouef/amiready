@@ -7,7 +7,9 @@ target 'Am I Ready' do
 
   # Pods for Am I Ready
   pod 'R.swift'
-  pod "PromiseKit", "~> 6.0"
+  pod 'RxSwift',    '~> 4.0'
+  pod 'RxCocoa',    '~> 4.0'
+  pod 'RxSwiftExt'
   pod 'Alamofire', '~> 4.7'
   pod 'SwiftyJSON'
 
